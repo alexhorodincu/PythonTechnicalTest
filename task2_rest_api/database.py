@@ -67,4 +67,19 @@ class InMemoryDB:
         """
         return self._reports.get(report_id)
     
+    def delete_report(self, report_id: int) -> bool:
+        """
+        Delete a report.
+        
+        Args:
+            report_id: Report ID to delete
+            
+        Returns:
+            True if deleted, False if not found
+        """
+        if report_id in self._reports:
+            del self._reports[report_id]
+            return True
+        return False
+    
 db = InMemoryDB()

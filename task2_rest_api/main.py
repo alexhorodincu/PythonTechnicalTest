@@ -1,6 +1,7 @@
 """ FastAPI app """
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import JSONResponse
 from typing import Optional
 from task2_rest_api.models import Report, ReportCreate, ReportList
 from task2_rest_api.database import db
@@ -83,6 +84,30 @@ def get_report(report_id: int):
         )
     
     return report
+
+@app.delete("/reports/{report_id}", status_code=204, tags=["Reports"])
+def delete_report(report_id: int):
+    """
+    Delete a report by ID.
+    
+    Args:
+        report_id: Report ID to delete
+        
+    Returns:
+        Empty response (204 No Content)
+        
+    Raises:
+        HTTPException: 404 if report not found
+    """
+    success = db.delete_report(report_id)
+    
+    if not success:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Report with ID {report_id} not found"
+        )
+    
+    return JSONResponse(status_code=204, content=None)
 
 if __name__ == "__main__":
     import uvicorn
