@@ -113,7 +113,7 @@ class FinancialAggregator:
         
         metrics = self.calculate_metrics(min_revenue)
         if format == 'json':
-            return json.dumps(metrics, indent=2)
+            return json.dumps(metrics, indent=2, default=str)
         
         report = "\n" + "=" * 80 + "\n"
         report += "FINANCIAL REPORT\n"
