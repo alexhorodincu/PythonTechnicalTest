@@ -51,6 +51,30 @@ def list_reports(
     reports = db.get_all_reports(sort_by=sort)
     return ReportList(total=len(reports), reports=reports)
 
+@app.get("/reports/{report_id}", response_model=Report, tags=["Reports"])
+def get_report(report_id: int):
+    """
+    Get a specific report by ID.
+    
+    Args:
+        report_id: Report ID
+        
+    Returns:
+        Report data
+        
+    Raises:
+        HTTPException: 404 if report not found
+    """
+    report = db.get_report(report_id)
+    
+    if report is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Report with ID {report_id} not found"
+        )
+    
+    return report
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

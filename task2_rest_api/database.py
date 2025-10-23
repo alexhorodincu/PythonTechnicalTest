@@ -55,4 +55,16 @@ class InMemoryDB:
         
         return reports
     
+    def get_report(self, report_id: int) -> Optional[Report]:
+        """
+        Get a report by ID.
+        
+        Args:
+            report_id: Report ID
+            
+        Returns:
+            Report or None if not found
+        """
+        return self._reports.get(report_id)
+    
 db = InMemoryDB()
