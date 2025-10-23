@@ -1,6 +1,8 @@
 """ Invoice Calculator """
 
 from typing import List, Dict
+import json
+from pathlib import Path
 
 class InvoiceCalculator:
     
@@ -61,6 +63,27 @@ class InvoiceCalculator:
     def calculate_grand_total(self) -> float:
         grand_total = self.calculate_subtotal() + self.calculate_total_tax()
         return round(grand_total, 2)
+    
+    def get_summary(self) -> Dict:
+        return {
+            'subtotal': self.calculate_subtotal(),
+            'total_tax': self.calculate_total_tax(),
+            'grand_total': self.calculate_grand_total(),
+            'items_count': len(self.items)
+        }
+    
+    def export_to_json(self, filepath: str) -> str:
+        output_path = Path(filepath)
+        
+        invoice_data = {
+            'items': self.items,
+            'summary': self.get_summary()
+        }
+        
+        with open(output_path, 'w') as f:
+            json.dump(invoice_data, f, indent=2)
+        
+        return str(output_path)
 
 def main():
     items = [
@@ -85,6 +108,9 @@ def main():
     print(f"Subtotal: {calc.calculate_subtotal():.2f}")
     print(f"Total Tax: {calc.calculate_total_tax():.2f}")
     print(f"Grand Total: {calc.calculate_grand_total():.2f}")
+    
+    output_file = calc.export_to_json("invoice_example.json")
+    print(f"\nExported to: {output_file}")
     
 if __name__ == "__main__":
     main()
