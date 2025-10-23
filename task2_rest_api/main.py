@@ -22,6 +22,15 @@ def read_root():
 
 @app.post("/reports", response_model=Report, status_code=201, tags=["Reports"])
 def create_report(report: ReportCreate):
+    """
+    Create a new report.
+    
+    Args:
+        report: Report data (title, content, author)
+        
+    Returns:
+        Created report with ID and timestamp
+    """
     new_report = db.create_report(report)
     return new_report
 
