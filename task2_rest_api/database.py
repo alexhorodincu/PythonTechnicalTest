@@ -36,4 +36,23 @@ class InMemoryDB:
         
         return report
     
+    def get_all_reports(self, sort_by: Optional[str] = None) -> List[Report]:
+        """
+        Get all reports, optionally sorted.
+        
+        Args:
+            sort_by: Field to sort by ('created_at' or 'title')
+            
+        Returns:
+            List of reports
+        """
+        reports = list(self._reports.values())
+        
+        if sort_by == 'created_at':
+            reports.sort(key=lambda r: r.created_at)
+        elif sort_by == 'title':
+            reports.sort(key=lambda r: r.title.lower())
+        
+        return reports
+    
 db = InMemoryDB()
