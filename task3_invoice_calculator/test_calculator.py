@@ -39,3 +39,19 @@ class TestInvoiceCalculator:
         
         with pytest.raises(ValueError, match="tax_rate must be between 0 and 1"):
             InvoiceCalculator(items)
+            
+    def test_floating_point_rounding(self):
+        items = [
+            {"description": "Item", "quantity": 3, "unit_price": 10.99, "tax_rate": 0.19}
+        ]
+        
+        calc = InvoiceCalculator(items)
+        
+        # 3 * 10.99 = 32.97
+        assert calc.calculate_subtotal() == 32.97
+        
+        # 32.97 * 0.19 = 6.2643 -> rounds to 6.26
+        assert calc.calculate_total_tax() == 6.26
+        
+        # 32.97 + 6.26 = 39.23
+        assert calc.calculate_grand_total() == 39.23
