@@ -50,6 +50,13 @@ class InvoiceCalculator:
             for item in self.items
         )
         return round(subtotal, 2)
+    
+    def calculate_total_tax(self) -> float:
+        total_tax = sum(
+            item['quantity'] * item['unit_price'] * item['tax_rate']
+            for item in self.items
+        )
+        return round(total_tax, 2)
 
 def main():
     items = [
@@ -72,6 +79,7 @@ def main():
     print("Invoice Calculator Demo")
     print("=" * 40)
     print(f"Subtotal: {calc.calculate_subtotal():.2f}")
+    print(f"Total Tax: {calc.calculate_total_tax():.2f}")
     
 if __name__ == "__main__":
     main()
