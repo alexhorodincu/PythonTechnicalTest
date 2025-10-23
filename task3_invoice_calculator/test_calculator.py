@@ -23,3 +23,19 @@ class TestInvoiceCalculator:
     def test_empty_item_list(self):
         with pytest.raises(ValueError, match="Items list cannot be empty"):
             InvoiceCalculator([])
+            
+    def test_invalid_tax_rate_too_high(self):
+        items = [
+            {"description": "Item", "quantity": 1, "unit_price": 100, "tax_rate": 1.5}
+        ]
+        
+        with pytest.raises(ValueError, match="tax_rate must be between 0 and 1"):
+            InvoiceCalculator(items)
+    
+    def test_invalid_tax_rate_negative(self):
+        items = [
+            {"description": "Item", "quantity": 1, "unit_price": 100, "tax_rate": -0.1}
+        ]
+        
+        with pytest.raises(ValueError, match="tax_rate must be between 0 and 1"):
+            InvoiceCalculator(items)
