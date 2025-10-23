@@ -19,3 +19,7 @@ class TestInvoiceCalculator:
         assert calc.calculate_subtotal() == 6500.0
         assert calc.calculate_total_tax() == 1235.0
         assert calc.calculate_grand_total() == 7735.0
+    
+    def test_empty_item_list(self):
+        with pytest.raises(ValueError, match="Items list cannot be empty"):
+            InvoiceCalculator([])
